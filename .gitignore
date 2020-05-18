@@ -1,5 +1,6 @@
 # Some private files, e.g. SSH key files
 files/*
+!files/.empty
 
 #  Local .terraform directories
 **/.terraform/*
