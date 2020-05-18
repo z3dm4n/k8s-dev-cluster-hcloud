@@ -7,7 +7,7 @@ hcloud WebUI -> Create new project -> Enter new project -> Access -> Add API Tok
 ## git clone
 
 ```bash
-git clone foo.git ~/k8s-dev-cluster-hcloud
+git clone https://github.com/z3dm4n/k8s-dev-cluster-hcloud.git ~/k8s-dev-cluster-hcloud
 ```
 
 ## ssh-keygen
