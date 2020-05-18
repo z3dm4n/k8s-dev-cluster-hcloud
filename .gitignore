@@ -1,0 +1,12 @@
+# Some private files, e.g. SSH key files
+files/*
+
+#  Local .terraform directories
+**/.terraform/*
+
+# .tfstate files
+*.tfstate
+*.tfstate.*
+
+# .tfvars files
+*.tfvars

@@ -1,0 +1,42 @@
+---
+- hosts: all
+  gather_facts: "no"
+
+  tasks:
+      - name: run "apt-get update"
+        apt:
+            update_cache: "yes"
+
+      - name: update all packages to the latest
+        apt:
+            upgrade: dist
+
+      - name: install "snapd" package
+        apt:
+            package: snapd
+            state: present
+
+      - name: install "microk8s" snap with option --classic
+        snap:
+            name: microk8s
+            classic: "yes"
+        notify:
+            - enable snapd
+            - restart snapd
+            - enable microk8s
+            - add node
+
+  handlers:
+      - name: enable snapd
+        service:
+            name: snapd
+            enabled: "yes"
+      - name: restart snapd
+        service:
+            name: snapd
+            state: restarted
+      - name: enable microk8s
+        command: /snap/bin/microk8s.enable dns storage ingress
+      - name: add node
+        debug:
+            msg: "run microk8s.add-node / microk8s.join now"
