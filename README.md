@@ -47,7 +47,7 @@ m1         Ready    <none>   9m4s    v1.18.2-41+b5cdb79a4060a3
 
 Find out more: https://microk8s.io
 
-## clean up, safe money ;-)
+## clean up, save money ;-)
 
 ```bash
 $ make clean
