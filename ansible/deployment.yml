@@ -20,11 +20,12 @@
         snap:
             name: microk8s
             classic: "yes"
+            state: present
         notify:
             - enable snapd
             - restart snapd
             - enable microk8s
-            - add node
+            - reboot
 
   handlers:
       - name: enable snapd
@@ -37,6 +38,6 @@
             state: restarted
       - name: enable microk8s
         command: /snap/bin/microk8s.enable dns storage ingress
-      - name: add node
-        debug:
-            msg: "run microk8s.add-node / microk8s.join now"
+      - name: reboot
+        reboot:
+            reboot_timeout: 120
