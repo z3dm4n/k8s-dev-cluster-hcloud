@@ -11,6 +11,7 @@ resource "local_file" "AnsibleInventory" {
   master1-dns = hcloud_server.m1.name,
   master1-ip = hcloud_server.m1.ipv4_address,
   master1-id = hcloud_server.m1.id,
+  master1-fip = hcloud_floating_ip.m1-fip.ip_address,
   worker1-dns = hcloud_server.n1.name,
   worker1-ip = hcloud_server.n1.ipv4_address,
   worker1-id = hcloud_server.n1.id,

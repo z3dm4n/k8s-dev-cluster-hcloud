@@ -1,6 +1,6 @@
 [masters]
-${master1-dns} ansible_host=${master1-ip} # ${master1-id}
+${master1-dns} ansible_host=${master1-ip} floating_ip=${master1-fip} # id: ${master1-id}
 
 [workers]
-${worker1-dns} ansible_host=${worker1-ip} # ${worker1-id}
-${worker2-dns} ansible_host=${worker2-ip} # ${worker2-id}
+${worker1-dns} ansible_host=${worker1-ip} # id: ${worker1-id}
+${worker2-dns} ansible_host=${worker2-ip} # id: ${worker2-id}
