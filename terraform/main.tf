@@ -57,6 +57,17 @@ resource "hcloud_server_network" "n2-network" {
   ip = "10.0.0.4"
 }
 
+resource "hcloud_floating_ip" "m1-fip" {
+  type = "ipv4"
+  server_id = hcloud_server.m1.id
+  home_location = "fsn1"
+}
+
+resource "hcloud_floating_ip_assignment" "fip-m1" {
+  floating_ip_id = hcloud_floating_ip.m1-fip.id
+  server_id = hcloud_server.m1.id
+}
+
 # Create VMs
 
 # master1
