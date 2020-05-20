@@ -46,7 +46,6 @@
   gather_facts: "no"
 
   tasks:
-
       - name: create aliases
         template:
             src: templates/bash_aliases.j2
