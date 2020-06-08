@@ -1,7 +1,7 @@
 # k8s-dev-cluster-hcloud
 
 Build a minimal Kubernetes cluster with zero effort in less than 10 minutes in
-Hetzner Cloud aka hcloud with MicroK8s
+Hetzner Cloud aka hcloud with Terraform, Ansible and MicroK8s for development
 
 ## get hcloud API Token
 
@@ -48,6 +48,7 @@ m1         Ready    <none>   9m4s    v1.18.2-41+b5cdb79a4060a3
 
 ```bash
 # enable MetalLB loadbalancer
+# assign floating_ip (see Ansible inventory)
 m1$ microk8s.enable metallb
 Enabling MetalLB
 Enter the IP address range (e.g., 10.64.140.43-10.64.140.49): 49.12.114.XXX-49.12.114.XXX
