@@ -34,9 +34,9 @@ local$ make
 local$ ssh -oUserKnownHostsFile=/dev/null -oStrictHostKeyChecking=no \
 -i files/k8s-dev-cluster_rsa root@$SeeInventoryForIpAddresses
 m1$ microk8s.add-node
-n1$ microk8s join
+n1$ microk8s join 10.0.0.2:25000/XXX
 m1$ microk8s.add-node
-n2$ microk8s join
+n2$ microk8s join 10.0.0.2:25000/XXX
 m1$ k get nodes
 NAME       STATUS   ROLES    AGE     VERSION
 10.0.0.3   Ready    <none>   4m30s   v1.18.2-41+b5cdb79a4060a3
