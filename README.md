@@ -10,8 +10,8 @@ hcloud WebUI -> Create new project -> Enter new project -> Access -> Add API Tok
 ## clone repo
 
 ```bash
-local$ git clone https://github.com/z3dm4n/k8s-dev-cluster-hcloud.git ~/k8s-dev-cluster-hcloud
-local$ cd ~/k8s-dev-cluster-hcloud
+local$ git clone https://github.com/z3dm4n/k8s-dev-cluster-hcloud.git k8s-dev-cluster-hcloud
+local$ cd k8s-dev-cluster-hcloud
 local$ cp terraform/terraform.tfvars.example terraform/terraform.tfvars
 local$ # change hcloud_token in terraform/terraform.tfvars
 ```
