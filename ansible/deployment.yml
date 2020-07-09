@@ -3,6 +3,15 @@
   gather_facts: "no"
 
   tasks:
+
+      - name: create aliases
+        template:
+            src: templates/bash_aliases.j2
+            dest: /root/.bash_aliases
+            owner: root
+            group: root
+            mode: '0600'
+
       - name: run "apt-get update"
         apt:
             update_cache: "yes"
@@ -16,10 +25,11 @@
             package: snapd
             state: present
 
-      - name: install "microk8s" snap with option --classic
+      - name: install classic "microk8s" snap from channel "edge/ha-preview"
         snap:
             name: microk8s
             classic: "yes"
+            channel: latest/edge/ha-preview
             state: present
         notify:
             - enable snapd
@@ -41,29 +51,3 @@
       - name: reboot
         reboot:
             reboot_timeout: 120
-
-- hosts: m1
-  gather_facts: "no"
-
-  tasks:
-      - name: create aliases
-        template:
-            src: templates/bash_aliases.j2
-            dest: /root/.bash_aliases
-            owner: root
-            group: root
-            mode: '0600'
-
-      - name: add floating ip
-        template:
-            src: templates/60-floating-ip.yaml.j2
-            dest: /etc/netplan/60-floating-ip.yaml
-            owner: root
-            group: root
-            mode: '0644'
-        notify:
-            - netplan apply
-
-  handlers:
-      - name: netplan apply
-        command: netplan apply
