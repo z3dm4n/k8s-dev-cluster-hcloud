@@ -58,35 +58,31 @@ high-availability: yes
 ## install a simple test app to your cluster
 
 ```bash
-# enable MetalLB loadbalancer
-# assign loadbalancer-ip (see `terraform output loadbalancer-ip` or `make output`)
-m1$ microk8s.enable metallb
-Enabling MetalLB
-Enter the IP address range (e.g., 10.64.140.43-10.64.140.49): xxx.xxx.xxx.xxx-xxx.xxx.xxx.xxx
 # use Helm
-m1$ helm repo add bitnami https://charts.bitnami.com/bitnami
+n1$ helm repo add bitnami https://charts.bitnami.com/bitnami
 # install Helm Chart for testing purposes
-m1$ helm install test bitnami/nginx \
+n1$ helm install test bitnami/nginx \
+--set='service.type=NodePort' \
 --set='service.nodePorts.http=30007' \
 --set='replicaCount=3' \
 --set='cloneStaticSiteFromGit.enabled=true' \
 --set='cloneStaticSiteFromGit.repository="https://gist.github.com/d395ce9d32321b57e5844dcdcfc0acb7.git"' \
 --set='cloneStaticSiteFromGit.branch="master"'
-m1$ k get pods -owide
+n1$ k get pods -owide
 NAME                         READY   STATUS    RESTARTS   AGE     IP            NODE   NOMINATED NODE   READINESS GATES
 test-nginx-58fbb6897-bkdkn   2/2     Running   0          5m19s   10.1.217.1    n2     <none>           <none>
 test-nginx-58fbb6897-rmwwr   2/2     Running   0          5m19s   10.1.40.132   n1     <none>           <none>
 test-nginx-58fbb6897-8zg72   2/2     Running   0          5m19s   10.1.98.1     n3     <none>           <none>
-m1$ k get svc
-NAME         TYPE           CLUSTER-IP       EXTERNAL-IP      PORT(S)                      AGE
-kubernetes   ClusterIP      10.152.183.1     <none>           443/TCP                      92m
-test-nginx   LoadBalancer   10.152.183.205   xxx.xxx.xxx.xxx  80:30007/TCP,443:32581/TCP   84s
+n1$ k get svc
+NAME         TYPE        CLUSTER-IP       EXTERNAL-IP   PORT(S)                      AGE
+kubernetes   ClusterIP   10.152.183.1     <none>        443/TCP                      8m49s
+test-nginx   NodePort    10.152.183.237   <none>        80:30007/TCP,443:31578/TCP   114s
 # see if it works using `curl` or just use your favourite browser
-local$ curl http://xxx.xxx.xxx.xxx/
+local$ curl http://$(terraform output loadbalancer-ip)
 ```
 
 You just installed a simple test deployment to your new highly-available MicroK8s
-cluster and accessed it via an external LoadBalancer IP.
+cluster and accessed its service using Hetzners new load balancing feature.
 
 Learn more: https://microk8s.io/docs/high-availability
 

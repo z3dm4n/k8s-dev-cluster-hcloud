@@ -69,23 +69,23 @@ resource "hcloud_server_network" "n3-network" {
   ip = "10.0.0.4"
 }
 
-resource "hcloud_server_network" "n4-network" {
-  server_id = hcloud_server.n4.id
-  network_id = hcloud_network.vpc1.id
-  ip = "10.0.0.5"
-}
+# resource "hcloud_server_network" "n4-network" {
+#   server_id = hcloud_server.n4.id
+#   network_id = hcloud_network.vpc1.id
+#   ip = "10.0.0.5"
+# }
 
-resource "hcloud_server_network" "n5-network" {
-  server_id = hcloud_server.n5.id
-  network_id = hcloud_network.vpc1.id
-  ip = "10.0.0.6"
-}
+# resource "hcloud_server_network" "n5-network" {
+#   server_id = hcloud_server.n5.id
+#   network_id = hcloud_network.vpc1.id
+#   ip = "10.0.0.6"
+# }
 
-resource "hcloud_server_network" "n6-network" {
-  server_id = hcloud_server.n6.id
-  network_id = hcloud_network.vpc1.id
-  ip = "10.0.0.7"
-}
+# resource "hcloud_server_network" "n6-network" {
+#   server_id = hcloud_server.n6.id
+#   network_id = hcloud_network.vpc1.id
+#   ip = "10.0.0.7"
+# }
 
 #
 # Loadbalancing
@@ -115,6 +115,7 @@ resource "hcloud_load_balancer_target" "lb1-target-n1" {
   server_id = hcloud_server.n1.id
   use_private_ip = true
   depends_on = [
+    hcloud_server.n1,
     hcloud_server_network.n1-network
   ]
 }
@@ -125,6 +126,7 @@ resource "hcloud_load_balancer_target" "lb1-target-n2" {
   server_id = hcloud_server.n2.id
   use_private_ip = true
   depends_on = [
+    hcloud_server.n2,
     hcloud_server_network.n2-network
   ]
 }
@@ -135,39 +137,43 @@ resource "hcloud_load_balancer_target" "lb1-target-n3" {
   server_id = hcloud_server.n3.id
   use_private_ip = true
   depends_on = [
+    hcloud_server.n3,
     hcloud_server_network.n3-network
   ]
 }
 
-resource "hcloud_load_balancer_target" "lb1-target-n4" {
-  type = "server"
-  load_balancer_id = hcloud_load_balancer.lb1.id
-  server_id = hcloud_server.n4.id
-  use_private_ip = true
-  depends_on = [
-    hcloud_server_network.n4-network
-  ]
-}
+# resource "hcloud_load_balancer_target" "lb1-target-n4" {
+#   type = "server"
+#   load_balancer_id = hcloud_load_balancer.lb1.id
+#   server_id = hcloud_server.n4.id
+#   use_private_ip = true
+#   depends_on = [
+#     hcloud_server.n4,
+#     hcloud_server_network.n4-network
+#   ]
+# }
 
-resource "hcloud_load_balancer_target" "lb1-target-n5" {
-  type = "server"
-  load_balancer_id = hcloud_load_balancer.lb1.id
-  server_id = hcloud_server.n5.id
-  use_private_ip = true
-  depends_on = [
-    hcloud_server_network.n5-network
-  ]
-}
+# resource "hcloud_load_balancer_target" "lb1-target-n5" {
+#   type = "server"
+#   load_balancer_id = hcloud_load_balancer.lb1.id
+#   server_id = hcloud_server.n5.id
+#   use_private_ip = true
+#   depends_on = [
+#     hcloud_server.n5,
+#     hcloud_server_network.n5-network
+#   ]
+# }
 
-resource "hcloud_load_balancer_target" "lb1-target-n6" {
-  type = "server"
-  load_balancer_id = hcloud_load_balancer.lb1.id
-  server_id = hcloud_server.n6.id
-  use_private_ip = true
-  depends_on = [
-    hcloud_server_network.n6-network
-  ]
-}
+# resource "hcloud_load_balancer_target" "lb1-target-n6" {
+#   type = "server"
+#   load_balancer_id = hcloud_load_balancer.lb1.id
+#   server_id = hcloud_server.n6.id
+#   use_private_ip = true
+#   depends_on = [
+#     hcloud_server.n6,
+#     hcloud_server_network.n6-network
+#   ]
+# }
 
 resource "hcloud_load_balancer_service" "lb1-service" {
   load_balancer_id = hcloud_load_balancer.lb1.id
@@ -211,7 +217,7 @@ resource "hcloud_server" "n2" {
   name = "n2"
   image = var.os_image
   server_type = var.server_type
-  location = "fsn1"
+  location = "nbg1"
   ssh_keys = [ hcloud_ssh_key.k8s-dev-cluster.id ]
   labels = { role = "node" }
   # wait for the VM to spin up
@@ -231,7 +237,7 @@ resource "hcloud_server" "n3" {
   name = "n3"
   image = var.os_image
   server_type = var.server_type
-  location = "fsn1"
+  location = "hel1"
   ssh_keys = [ hcloud_ssh_key.k8s-dev-cluster.id ]
   labels = { role = "node" }
   # wait for the VM to spin up
@@ -246,62 +252,62 @@ resource "hcloud_server" "n3" {
 }
 }
 
-# node4
-resource "hcloud_server" "n4" {
-  name = "n4"
-  image = var.os_image
-  server_type = var.server_type
-  location = "nbg1" # possible values: fsn1,nbg1,hel1
-  ssh_keys = [ hcloud_ssh_key.k8s-dev-cluster.id ]
-  labels = { role = "node" }
-  # wait for the VM to spin up
-  provisioner "remote-exec" {
-    inline = [ "/bin/true" ]
-    connection {
-      type = "ssh"
-      user = "root"
-      host = hcloud_server.n4.ipv4_address
-      private_key = file(var.private_key_path)
-    }
-}
-}
+# # node4
+# resource "hcloud_server" "n4" {
+#   name = "n4"
+#   image = var.os_image
+#   server_type = var.server_type
+#   location = "nbg1" # possible values: fsn1,nbg1,hel1
+#   ssh_keys = [ hcloud_ssh_key.k8s-dev-cluster.id ]
+#   labels = { role = "node" }
+#   # wait for the VM to spin up
+#   provisioner "remote-exec" {
+#     inline = [ "/bin/true" ]
+#     connection {
+#       type = "ssh"
+#       user = "root"
+#       host = hcloud_server.n4.ipv4_address
+#       private_key = file(var.private_key_path)
+#     }
+# }
+# }
 
-# node5
-resource "hcloud_server" "n5" {
-  name = "n5"
-  image = var.os_image
-  server_type = var.server_type
-  location = "nbg1"
-  ssh_keys = [ hcloud_ssh_key.k8s-dev-cluster.id ]
-  labels = { role = "node" }
-  # wait for the VM to spin up
-  provisioner "remote-exec" {
-    inline = [ "/bin/true" ]
-    connection {
-      type = "ssh"
-      user = "root"
-      host = hcloud_server.n5.ipv4_address
-      private_key = file(var.private_key_path)
-    }
-}
-}
+# # node5
+# resource "hcloud_server" "n5" {
+#   name = "n5"
+#   image = var.os_image
+#   server_type = var.server_type
+#   location = "nbg1"
+#   ssh_keys = [ hcloud_ssh_key.k8s-dev-cluster.id ]
+#   labels = { role = "node" }
+#   # wait for the VM to spin up
+#   provisioner "remote-exec" {
+#     inline = [ "/bin/true" ]
+#     connection {
+#       type = "ssh"
+#       user = "root"
+#       host = hcloud_server.n5.ipv4_address
+#       private_key = file(var.private_key_path)
+#     }
+# }
+# }
 
-# node6
-resource "hcloud_server" "n6" {
-  name = "n6"
-  image = var.os_image
-  server_type = var.server_type
-  location = "nbg1"
-  ssh_keys = [ hcloud_ssh_key.k8s-dev-cluster.id ]
-  labels = { role = "node" }
-  # wait for the VM to spin up
-  provisioner "remote-exec" {
-    inline = [ "/bin/true" ]
-    connection {
-      type = "ssh"
-      user = "root"
-      host = hcloud_server.n6.ipv4_address
-      private_key = file(var.private_key_path)
-    }
-}
-}
+# # node6
+# resource "hcloud_server" "n6" {
+#   name = "n6"
+#   image = var.os_image
+#   server_type = var.server_type
+#   location = "nbg1"
+#   ssh_keys = [ hcloud_ssh_key.k8s-dev-cluster.id ]
+#   labels = { role = "node" }
+#   # wait for the VM to spin up
+#   provisioner "remote-exec" {
+#     inline = [ "/bin/true" ]
+#     connection {
+#       type = "ssh"
+#       user = "root"
+#       host = hcloud_server.n6.ipv4_address
+#       private_key = file(var.private_key_path)
+#     }
+# }
+# }
