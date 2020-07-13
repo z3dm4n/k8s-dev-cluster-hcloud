@@ -20,10 +20,13 @@ variable "server_type" {
   default = "cx21"
 }
 
-# Configure the Hetzner Cloud Provider
+# Use version 1.18 of Terraform Hetzner Cloud provider
+#
+# waiting for the release of 1.20 as `terraform destroy` isn't working out in 1.19
+# and `apply` as well as `destroy` isn't working with >= 4 servers in version 1.18
 provider "hcloud" {
   token = var.hcloud_token
-  version = "~> 1.18"
+  version = "= 1.18"
 }
 
 # Import SSH key
@@ -252,12 +255,11 @@ resource "hcloud_server" "n3" {
 }
 }
 
-# # node4
 # resource "hcloud_server" "n4" {
 #   name = "n4"
 #   image = var.os_image
 #   server_type = var.server_type
-#   location = "nbg1" # possible values: fsn1,nbg1,hel1
+#   location = "fsn1" # possible values: fsn1,nbg1,hel1
 #   ssh_keys = [ hcloud_ssh_key.k8s-dev-cluster.id ]
 #   labels = { role = "node" }
 #   # wait for the VM to spin up

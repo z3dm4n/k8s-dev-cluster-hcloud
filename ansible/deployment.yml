@@ -25,7 +25,7 @@
             package: snapd
             state: present
 
-      - name: install classic "microk8s" snap from channel "edge/ha-preview"
+      - name: install "microk8s" snap from channel "latest/edge/ha-preview"
         snap:
             name: microk8s
             classic: "yes"
