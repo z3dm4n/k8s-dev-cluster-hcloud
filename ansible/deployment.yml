@@ -25,11 +25,10 @@
             package: snapd
             state: present
 
-      - name: install "microk8s" snap from channel "latest/edge/ha-preview"
+      - name: install "microk8s" snap
         snap:
             name: microk8s
             classic: "yes"
-            channel: latest/edge/ha-preview
             state: present
         notify:
             - enable snapd
