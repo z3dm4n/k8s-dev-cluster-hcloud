@@ -11,3 +11,6 @@ files/*
 
 # .tfvars files
 *.tfvars
+
+# Ansible inventory
+ansible/hosts
