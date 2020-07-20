@@ -25,9 +25,10 @@
             package: snapd
             state: present
 
-      - name: install "microk8s" snap
+      - name: install latest stable "microk8s" snap
         snap:
             name: microk8s
+            channel: latest
             classic: "yes"
             state: present
         notify:
