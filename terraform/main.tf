@@ -20,13 +20,10 @@ variable "server_type" {
   default = "cx21"
 }
 
-# Use version 1.18 of Terraform Hetzner Cloud provider
-#
-# waiting for the release of 1.20 as `terraform destroy` isn't working out in 1.19
-# and `apply` as well as `destroy` isn't working with >= 4 servers in version 1.18
+# Explicitly use version 1.19.2 of Terraform Hetzner Cloud provider
 provider "hcloud" {
   token = var.hcloud_token
-  version = "= 1.18"
+  version = "= 1.19.2"
 }
 
 # Import SSH key
@@ -56,37 +53,37 @@ resource "hcloud_network_subnet" "vpc1-subnet1" {
 # Setup server networking
 resource "hcloud_server_network" "n1-network" {
   server_id = hcloud_server.n1.id
-  network_id = hcloud_network.vpc1.id
+  subnet_id = hcloud_network_subnet.vpc1-subnet1.id
   ip = "10.0.0.2"
 }
 
 resource "hcloud_server_network" "n2-network" {
   server_id = hcloud_server.n2.id
-  network_id = hcloud_network.vpc1.id
+  subnet_id = hcloud_network_subnet.vpc1-subnet1.id
   ip = "10.0.0.3"
 }
 
 resource "hcloud_server_network" "n3-network" {
   server_id = hcloud_server.n3.id
-  network_id = hcloud_network.vpc1.id
+  subnet_id = hcloud_network_subnet.vpc1-subnet1.id
   ip = "10.0.0.4"
 }
 
 # resource "hcloud_server_network" "n4-network" {
 #   server_id = hcloud_server.n4.id
-#   network_id = hcloud_network.vpc1.id
+#   subnet_id = hcloud_network_subnet.vpc1-subnet1.id
 #   ip = "10.0.0.5"
 # }
 
 # resource "hcloud_server_network" "n5-network" {
 #   server_id = hcloud_server.n5.id
-#   network_id = hcloud_network.vpc1.id
+#   subnet_id = hcloud_network_subnet.vpc1-subnet1.id
 #   ip = "10.0.0.6"
 # }
 
 # resource "hcloud_server_network" "n6-network" {
 #   server_id = hcloud_server.n6.id
-#   network_id = hcloud_network.vpc1.id
+#   subnet_id = hcloud_network_subnet.vpc1-subnet1.id
 #   ip = "10.0.0.7"
 # }
 
@@ -107,7 +104,7 @@ resource "hcloud_load_balancer" "lb1" {
 
 resource "hcloud_load_balancer_network" "lb1-network" {
   load_balancer_id = hcloud_load_balancer.lb1.id
-  network_id = hcloud_network.vpc1.id
+  subnet_id = hcloud_network_subnet.vpc1-subnet1.id
   enable_public_interface = true
   ip = "10.0.0.8"
 }
@@ -118,8 +115,8 @@ resource "hcloud_load_balancer_target" "lb1-target-n1" {
   server_id = hcloud_server.n1.id
   use_private_ip = true
   depends_on = [
-    hcloud_server.n1,
-    hcloud_server_network.n1-network
+    hcloud_server_network.n1-network,
+    hcloud_load_balancer_network.lb1-network
   ]
 }
 
@@ -129,8 +126,8 @@ resource "hcloud_load_balancer_target" "lb1-target-n2" {
   server_id = hcloud_server.n2.id
   use_private_ip = true
   depends_on = [
-    hcloud_server.n2,
-    hcloud_server_network.n2-network
+    hcloud_server_network.n2-network,
+    hcloud_load_balancer_network.lb1-network
   ]
 }
 
@@ -140,8 +137,8 @@ resource "hcloud_load_balancer_target" "lb1-target-n3" {
   server_id = hcloud_server.n3.id
   use_private_ip = true
   depends_on = [
-    hcloud_server.n3,
-    hcloud_server_network.n3-network
+    hcloud_server_network.n3-network,
+    hcloud_load_balancer_network.lb1-network
   ]
 }
 
@@ -151,8 +148,8 @@ resource "hcloud_load_balancer_target" "lb1-target-n3" {
 #   server_id = hcloud_server.n4.id
 #   use_private_ip = true
 #   depends_on = [
-#     hcloud_server.n4,
-#     hcloud_server_network.n4-network
+#     hcloud_server_network.n4-network,
+#     hcloud_load_balancer_network.lb1-network
 #   ]
 # }
 
@@ -162,8 +159,8 @@ resource "hcloud_load_balancer_target" "lb1-target-n3" {
 #   server_id = hcloud_server.n5.id
 #   use_private_ip = true
 #   depends_on = [
-#     hcloud_server.n5,
-#     hcloud_server_network.n5-network
+#     hcloud_server_network.n5-network,
+#     hcloud_load_balancer_network.lb1-network
 #   ]
 # }
 
@@ -173,8 +170,8 @@ resource "hcloud_load_balancer_target" "lb1-target-n3" {
 #   server_id = hcloud_server.n6.id
 #   use_private_ip = true
 #   depends_on = [
-#     hcloud_server.n6,
-#     hcloud_server_network.n6-network
+#     hcloud_server_network.n6-network,
+#     hcloud_load_balancer_network.lb1-network
 #   ]
 # }
 
@@ -255,6 +252,7 @@ resource "hcloud_server" "n3" {
 }
 }
 
+# # node4
 # resource "hcloud_server" "n4" {
 #   name = "n4"
 #   image = var.os_image
