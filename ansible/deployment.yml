@@ -1,16 +1,9 @@
+# deployment.yml
 ---
 - hosts: all
   gather_facts: "no"
 
   tasks:
-
-      - name: create aliases
-        template:
-            src: templates/bash_aliases.j2
-            dest: /root/.bash_aliases
-            owner: root
-            group: root
-            mode: '0600'
 
       - name: run "apt-get update"
         apt:
@@ -35,19 +28,35 @@
             - enable snapd
             - restart snapd
             - enable microk8s
+            - create alias k
+            - create alias kubectl
+            - create alias helm
             - reboot
 
   handlers:
+
       - name: enable snapd
         service:
             name: snapd
             enabled: "yes"
+
       - name: restart snapd
         service:
             name: snapd
             state: restarted
+
       - name: enable microk8s
         command: /snap/bin/microk8s.enable dns storage ingress helm3
+
+      - name: create alias k
+        command: snap alias microk8s.kubectl k
+
+      - name: create alias kubectl
+        command: snap alias microk8s.kubectl kubectl
+
+      - name: create alias helm
+        command: snap alias microk8s.helm3 helm
+
       - name: reboot
         reboot:
             reboot_timeout: 120
