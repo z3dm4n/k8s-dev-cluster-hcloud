@@ -1,0 +1,44 @@
+# 03-setup-microk8s-cluster.yml
+---
+- hosts: n1
+  gather_facts: "no"
+
+  tasks:
+
+      - name: "add node n2"
+        shell: /snap/bin/microk8s.add-node | grep 10.0.0.2 | cut -d'/' -f2
+        register: k8s_token_n2
+        changed_when: false
+
+      - name: "add node n3"
+        shell: /snap/bin/microk8s.add-node | grep 10.0.0.2 | cut -d'/' -f2
+        register: k8s_token_n3
+        changed_when: false
+
+      - name: "add k8s token to dummy host"
+        add_host:
+            name: "K8S_TOKEN_HOLDER"
+            token_n2: "{{ k8s_token_n2.stdout }}"
+            token_n3: "{{ k8s_token_n3.stdout }}"
+
+- hosts: n2
+  gather_facts: "no"
+
+  tasks:
+
+      - name: "join node n2"
+        shell: >
+            /snap/bin/microk8s.join
+            10.0.0.2:25000/{{ hostvars['K8S_TOKEN_HOLDER']['token_n2'] }}
+        when: hostvars['K8S_TOKEN_HOLDER']['token_n2'] != ""
+
+- hosts: n3
+  gather_facts: "no"
+
+  tasks:
+
+      - name: "join node n3"
+        shell: >
+            /snap/bin/microk8s.join
+            10.0.0.2:25000/{{ hostvars['K8S_TOKEN_HOLDER']['token_n3'] }}
+        when: hostvars['K8S_TOKEN_HOLDER']['token_n3'] != ""

@@ -1,2 +1,7 @@
+# site.yml
 ---
-- import_playbook: deployment.yml
+- import_playbook: 01-setup-microk8s-snap.yml
+- import_playbook: 02-setup-microk8s-snap-aliases.yml
+- import_playbook: 03-setup-microk8s-cluster.yml
+- import_playbook: 04-setup-microk8s-metallb.yml
+- import_playbook: 05-setup-microk8s-ingress-nginx.yml

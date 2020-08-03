@@ -1,5 +1,5 @@
 all: terraform ansible output
-.PHONY: all terraform ansible ssh-key output clean
+.PHONY: all terraform ansible ssh-key output demo clean
 
 terraform:
 	cd terraform; \
@@ -16,6 +16,10 @@ ssh-key:
 output:
 	cd terraform; \
 	terraform output
+
+demo:
+	cd ansible; \
+	ansible-playbook demo/99-setup-microk8s-gitea.yml
 
 clean:
 	cd terraform; \

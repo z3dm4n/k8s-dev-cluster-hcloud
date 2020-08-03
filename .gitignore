@@ -13,4 +13,4 @@ files/*
 *.tfvars
 
 # Ansible inventory
-ansible/hosts
+ansible/inventory/hosts

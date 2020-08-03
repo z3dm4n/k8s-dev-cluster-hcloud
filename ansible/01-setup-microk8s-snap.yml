@@ -1,0 +1,56 @@
+# 01-setup-microk8s-snap.yml
+---
+- hosts: all
+  gather_facts: "no"
+
+  tasks:
+
+      - name: "update packages to the latest"
+        apt:
+            upgrade: dist
+            update_cache: "yes"
+
+      - name: "install snapd package"
+        apt:
+            package: snapd
+            state: present
+
+      - name: "install latest stable microk8s snap"
+        snap:
+            name: microk8s
+            channel: latest
+            classic: "yes"
+            state: present
+        notify:
+            - enable snapd
+            - start snapd
+            - check microk8s status
+            - enable microk8s addons
+            - reboot
+
+  handlers:
+
+      - name: "enable snapd"
+        service:
+            name: snapd
+            enabled: "yes"
+
+      - name: "start snapd"
+        service:
+            name: snapd
+            state: started
+
+      - name: "check microk8s status"
+        shell: /snap/bin/microk8s.status | grep 'enabled'
+        register: microk8s_status
+        failed_when: false
+        changed_when: false
+        ignore_errors: "true"
+
+      - name: "enable microk8s addons"
+        command: /snap/bin/microk8s.enable dns storage ingress helm3
+        when: microk8s_status.rc != 0
+
+      - name: "reboot"
+        reboot:
+            reboot_timeout: 120

@@ -17,16 +17,8 @@ resource "local_file" "AnsibleInventory" {
   node3-dns = hcloud_server.n3.name,
   node3-ip = hcloud_server.n3.ipv4_address,
   node3-id = hcloud_server.n3.id,
-  # node4-dns = hcloud_server.n4.name,
-  # node4-ip = hcloud_server.n4.ipv4_address,
-  # node4-id = hcloud_server.n4.id,
-  # node5-dns = hcloud_server.n5.name,
-  # node5-ip = hcloud_server.n5.ipv4_address,
-  # node5-id = hcloud_server.n5.id,
-  # node6-dns = hcloud_server.n6.name,
-  # node6-ip = hcloud_server.n6.ipv4_address,
-  # node6-id = hcloud_server.n6.id
+  loadbalancer-ip = hcloud_load_balancer.lb1.ipv4
  }
  )
- filename = "../ansible/hosts"
+ filename = "../ansible/inventory/hosts"
 }
