@@ -43,9 +43,9 @@
         command: /snap/bin/microk8s.enable "{{ item }}"
         loop:
             - dns
-            - storage
-            - ingress
             - helm3
+            - ingress
+            - storage
 
       - name: "reboot"
         reboot:
