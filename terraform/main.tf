@@ -2,11 +2,26 @@
 # Basics
 #
 
+terraform {
+  required_providers {
+    hcloud = {
+      # Use source on Terraform 0.13 or greater
+      # source = "hetznercloud/hcloud"
+      # Explicitly use version 1.20.0 of Terraform Hetzner Cloud provider
+      version = "1.20.0"
+    }
+  }
+}
+
 # Set the variables values in terraform.tfvars
 # or use the -var='hcloud_token="xxx"' CLI option
 variable "hcloud_token" {}
 variable "private_key_path" {}
 variable "public_key_path" {}
+
+provider "hcloud" {
+  token = var.hcloud_token
+}
 
 # Setup OS image
 variable "os_image" {
@@ -18,12 +33,6 @@ variable "os_image" {
 variable "server_type" {
   type = string
   default = "cpx11"
-}
-
-# Explicitly use version 1.19.2 of Terraform Hetzner Cloud provider
-provider "hcloud" {
-  token = var.hcloud_token
-  version = "= 1.19.2"
 }
 
 # Import SSH key
