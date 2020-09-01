@@ -7,8 +7,8 @@ terraform {
     hcloud = {
       # Use source on Terraform 0.13 or greater
       # source = "hetznercloud/hcloud"
-      # Explicitly use version 1.20.0 of Terraform Hetzner Cloud provider
-      version = "1.20.0"
+      # Explicitly use version 1.20.1 of Terraform Hetzner Cloud provider
+      version = "1.20.1"
     }
   }
 }
