@@ -1,7 +1,13 @@
 # k8s-dev-cluster-hcloud
 
-Build a minimal Kubernetes cluster with zero effort in less than 10 minutes in
-Hetzner Cloud aka hcloud with Terraform, Ansible and MicroK8s for development
+Build a minimal *highly available (HA) Kubernetes cluster* with zero effort in less
+than 10 minutes in Hetzner Cloud aka hcloud with Terraform, Ansible and MicroK8s for
+development.
+
+> New in 1.19, high availability is automatically enabled on MicroK8s for clusters
+> with three or more nodes.
+
+Learn more: https://microk8s.io/docs/high-availability
 
 ## get hcloud API Token
 
@@ -41,9 +47,7 @@ Now browse to http://www.gitea.local and finish the Gitea installation.
 
 ## summary
 
-You just installed Gitea to your new MicroK8s cluster in less than 10 minutes.
-
-Learn more: https://microk8s.io/docs/clustering
+You just installed Gitea to your new MicroK8s HA cluster in less than 10 minutes.
 
 ## clean up, save money ;-)
 
