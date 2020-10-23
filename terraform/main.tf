@@ -7,8 +7,8 @@ terraform {
     hcloud = {
       # Use source on Terraform 0.13 or greater
       # source = "hetznercloud/hcloud"
-      # Explicitly use version 1.21.0 of Terraform Hetzner Cloud provider
-      version = "1.21.0"
+      # Explicitly use version 1.22.0 of Terraform Hetzner Cloud provider
+      version = "1.22.0"
     }
   }
 }
@@ -32,7 +32,7 @@ variable "os_image" {
 # Setup server type
 variable "server_type" {
   type = string
-  default = "cpx11"
+  default = "cx21"
 }
 
 # Import SSH key
