@@ -14,4 +14,7 @@
         shell: >
             echo "{{ loadbalancer_ip }}-{{ loadbalancer_ip }}" |
             /snap/bin/microk8s.enable metallb
+        environment:
+            LC_ALL: "C.UTF-8"
+            LANG: "C.UTF-8"
         when: metallb_status.stdout == "disabled"
