@@ -6,12 +6,15 @@ terraform {
   required_providers {
     hcloud = {
       source  = "hetznercloud/hcloud"
-      version = "1.24.0"
+      version = "1.25.1"
     }
     local = {
-      source = "hashicorp/local"
+      source  = "hashicorp/local"
+      version = "~> 1.4"
+
     }
   }
+  required_version = ">= 0.13"
 }
 
 # Set the variables values in terraform.tfvars
