@@ -1,8 +1,8 @@
 # k8s-dev-cluster-hcloud
 
 Build a minimal *highly available (HA) Kubernetes cluster* with zero effort in less
-than 10 minutes in Hetzner Cloud aka hcloud with Terraform 0.13, Ansible and MicroK8s for
-development.
+than 10 minutes in Hetzner Cloud aka hcloud with Terraform >= 0.13, Ansible and MicroK8s
+for development.
 
 > New in 1.19, high availability is automatically enabled on MicroK8s for clusters
 > with three or more nodes.
