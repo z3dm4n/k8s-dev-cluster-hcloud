@@ -1,5 +1,4 @@
 provider "local" {
-  version = "~> 1.4"
 }
 
 # generate Ansible inventory file
