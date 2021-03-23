@@ -16,6 +16,5 @@ terraform/.terraform.lock.hcl
 # .tfvars files
 *.tfvars
 
-
 # Ansible inventory
 ansible/inventory/hosts
