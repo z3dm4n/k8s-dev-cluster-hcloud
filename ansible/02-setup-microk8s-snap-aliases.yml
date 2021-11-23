@@ -1,0 +1,24 @@
+# 02-setup-microk8s-snap-aliases.yml
+---
+- hosts: n1
+  gather_facts: "no"
+
+  tasks:
+
+      # snap alias command is idempotent
+      - name: "create alias k"
+        command: snap alias microk8s.kubectl k
+        register: k_alias
+        changed_when: k_alias.stdout.find('Added') != -1
+
+      # snap alias command is idempotent
+      - name: "create alias kubectl"
+        command: snap alias microk8s.kubectl kubectl
+        register: kubectl_alias
+        changed_when: kubectl_alias.stdout.find('Added') != -1
+
+      # snap alias command is idempotent
+      - name: "create alias helm"
+        command: snap alias microk8s.helm3 helm
+        register: helm_alias
+        changed_when: helm_alias.stdout.find('Added') != -1

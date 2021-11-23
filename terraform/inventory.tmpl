@@ -1,0 +1,7 @@
+[nodes]
+${node1-dns} ansible_host=${node1-ip} # id: ${node1-id}
+${node2-dns} ansible_host=${node2-ip} # id: ${node2-id}
+${node3-dns} ansible_host=${node3-ip} # id: ${node3-id}
+
+[nodes:vars]
+loadbalancer_ip=${loadbalancer-ip}

@@ -1,0 +1,3 @@
+hcloud_token = "XXX"
+private_key_path = "../files/k8s-dev-cluster_rsa"
+public_key_path = "../files/k8s-dev-cluster_rsa.pub"

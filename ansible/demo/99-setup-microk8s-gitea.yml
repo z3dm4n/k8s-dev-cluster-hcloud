@@ -1,0 +1,33 @@
+# demo/99-setup-microk8s-gitea.yml
+---
+- hosts: n1
+  gather_facts: "no"
+
+  tasks:
+
+      # helm repo command is idempotent
+      - name: "add k8s-land helm repo"
+        command: /snap/bin/helm repo add k8s-land https://charts.k8s.land
+        changed_when: false
+
+      - name: "upload values-gitea.yaml into /root"
+        copy:
+            src: ../files/demo/values-gitea.yaml
+            dest: /root/values-gitea.yaml
+            owner: root
+            group: root
+            mode: '0644'
+            checksum: 3ca56ef72d756c8a34480a4895f1d23fab5569b6
+
+      - name: "check for gitea helm release"
+        command: /snap/bin/helm status gitea
+        register: gitea_status
+        failed_when: false
+        changed_when: false
+        ignore_errors: "true"
+
+      - name: "install gitea helm chart"
+        command: >
+            /snap/bin/helm install gitea k8s-land/gitea
+            -f /root/values-gitea.yaml
+        when: gitea_status.rc != 0

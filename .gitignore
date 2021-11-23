@@ -1,0 +1,20 @@
+# Some private files, e.g. SSH key files
+files/*
+!files/.keep
+
+#  Local .terraform directories
+**/.terraform/*
+
+# Dependency Lock File (Terraform >= 0.14)
+# https://www.terraform.io/docs/language/dependency-lock.html
+terraform/.terraform.lock.hcl
+
+# .tfstate files
+*.tfstate
+*.tfstate.*
+
+# .tfvars files
+*.tfvars
+
+# Ansible inventory
+ansible/inventory/hosts
