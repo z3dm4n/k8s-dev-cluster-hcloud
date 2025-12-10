@@ -18,3 +18,12 @@ terraform/.terraform.lock.hcl
 
 # Ansible inventory
 ansible/inventory/hosts
+
+# Editors
+.vscode
+.idea
+*.swp
+*.swo
+
+# OS
+.DS_Store

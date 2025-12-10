@@ -4,17 +4,14 @@
   gather_facts: "no"
 
   tasks:
+    - name: "check metallb addon"
+      command: /snap/bin/microk8s.status -a metallb
+      register: metallb_status
+      changed_when: false
 
-      - name: "check metallb addon"
-        command: /snap/bin/microk8s.status -a metallb
-        register: metallb_status
-        changed_when: false
-
-      - name: "enable metallb addon"
-        shell: >
-            echo "{{ loadbalancer_ip }}-{{ loadbalancer_ip }}" |
-            /snap/bin/microk8s.enable metallb
-        environment:
-            LC_ALL: "C.UTF-8"
-            LANG: "C.UTF-8"
-        when: metallb_status.stdout == "disabled"
+    - name: "enable metallb addon"
+      command: /snap/bin/microk8s.enable metallb:{{ loadbalancer_ip }}-{{ loadbalancer_ip }}
+      environment:
+        LC_ALL: "C.UTF-8"
+        LANG: "C.UTF-8"
+      when: metallb_status.stdout == "disabled"
