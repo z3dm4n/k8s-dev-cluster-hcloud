@@ -6,8 +6,8 @@
   tasks:
 
       # helm repo command is idempotent
-      - name: "add k8s-land helm repo"
-        command: /snap/bin/helm repo add k8s-land https://charts.k8s.land
+      - name: "add gitea-charts helm repo"
+        command: /snap/bin/helm repo add gitea-charts https://dl.gitea.com/charts/
         changed_when: false
 
       - name: "upload values-gitea.yaml into /root"
@@ -17,7 +17,7 @@
             owner: root
             group: root
             mode: '0644'
-            checksum: 3ca56ef72d756c8a34480a4895f1d23fab5569b6
+            checksum: b91bf7b00831c3539845b1085fbc1e471d4cd623
 
       - name: "check for gitea helm release"
         command: /snap/bin/helm status gitea
@@ -28,6 +28,6 @@
 
       - name: "install gitea helm chart"
         command: >
-            /snap/bin/helm install gitea k8s-land/gitea
+            /snap/bin/helm install gitea gitea-charts/gitea
             -f /root/values-gitea.yaml
         when: gitea_status.rc != 0

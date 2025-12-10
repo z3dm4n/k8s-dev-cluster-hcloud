@@ -39,11 +39,11 @@ local$ make
 
 ```bash
 local$ make demo
-local$ cd terraform; echo "`terraform output loadbalancer-ip` www.gitea.local"
+local$ cd terraform; echo "$(terraform output -raw loadbalancer-ip) www.gitea.local"
 local$ # add above command output to /etc/hosts
 ```
 
-Now browse to http://www.gitea.local and finish the Gitea installation.
+Now browse to http://www.gitea.local and log in with user `gitea_admin` and password `gitea_admin`.
 
 ## summary
 
