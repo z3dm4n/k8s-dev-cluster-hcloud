@@ -6,7 +6,7 @@ terraform {
   required_providers {
     hcloud = {
       source  = "hetznercloud/hcloud"
-      version = "1.25.1"
+      version = "1.57.0"
     }
     local = {
       source  = "hashicorp/local"
@@ -30,13 +30,13 @@ provider "hcloud" {
 # Setup OS image
 variable "os_image" {
   type    = string
-  default = "ubuntu-20.04"
+  default = "ubuntu-24.04"
 }
 
 # Setup server type
 variable "server_type" {
   type    = string
-  default = "cx21"
+  default = "cx23"
 }
 
 # Import SSH key
@@ -147,8 +147,10 @@ resource "hcloud_load_balancer_service" "lb1-service" {
     port     = 80
     interval = 15
     timeout  = 10
+    retries  = 3
     http {
       domain = "www.gitea.local"
+      path   = "/"
     }
   }
 }
