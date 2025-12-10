@@ -4,30 +4,30 @@
   gather_facts: "no"
 
   tasks:
+    # helm repo command is idempotent
+    - name: "add gitea-charts helm repo"
+      command: /snap/bin/helm repo add gitea-charts https://dl.gitea.com/charts/
+      changed_when: false
 
-      # helm repo command is idempotent
-      - name: "add gitea-charts helm repo"
-        command: /snap/bin/helm repo add gitea-charts https://dl.gitea.com/charts/
-        changed_when: false
+    - name: "upload values-gitea.yaml into /root"
+      copy:
+        src: ../files/demo/values-gitea.yaml
+        dest: /root/values-gitea.yaml
+        owner: root
+        group: root
+        mode: "0644"
+        checksum: b91bf7b00831c3539845b1085fbc1e471d4cd623
 
-      - name: "upload values-gitea.yaml into /root"
-        copy:
-            src: ../files/demo/values-gitea.yaml
-            dest: /root/values-gitea.yaml
-            owner: root
-            group: root
-            mode: '0644'
-            checksum: b91bf7b00831c3539845b1085fbc1e471d4cd623
+    - name: "check for gitea helm release"
+      command: /snap/bin/helm status gitea
+      register: gitea_status
+      failed_when: false
+      changed_when: false
+      ignore_errors: "true"
 
-      - name: "check for gitea helm release"
-        command: /snap/bin/helm status gitea
-        register: gitea_status
-        failed_when: false
-        changed_when: false
-        ignore_errors: "true"
-
-      - name: "install gitea helm chart"
-        command: >
-            /snap/bin/helm install gitea gitea-charts/gitea
-            -f /root/values-gitea.yaml
-        when: gitea_status.rc != 0
+    - name: "install gitea helm chart"
+      command: >
+        /snap/bin/helm upgrade --install gitea gitea-charts/gitea
+        -f /root/values-gitea.yaml
+        --namespace default
+      when: gitea_status.rc != 0
