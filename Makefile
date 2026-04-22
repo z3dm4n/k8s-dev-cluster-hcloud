@@ -3,8 +3,8 @@ all: terraform ansible output
 
 terraform:
 	cd terraform; \
-	terraform init; \
-	terraform apply
+	tofu init; \
+	tofu apply
 
 ansible:
 	cd ansible; \
@@ -15,7 +15,7 @@ ssh-key:
 
 output:
 	cd terraform; \
-	terraform output
+	tofu output
 
 demo:
 	cd ansible; \
@@ -23,4 +23,4 @@ demo:
 
 clean:
 	cd terraform; \
-	terraform destroy
+	tofu destroy

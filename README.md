@@ -1,56 +1,42 @@
 # k8s-dev-cluster-hcloud
 
-Build a minimal *highly available (HA) Kubernetes cluster* with zero effort in less
-than 10 minutes in Hetzner Cloud aka hcloud with Terraform >= 1.5, Ansible and MicroK8s
-for development.
+Minimal, highly available (HA) Kubernetes cluster on Hetzner Cloud — up and running in under 10 minutes.
 
-> New in 1.19, high availability is automatically enabled on MicroK8s for clusters
-> with three or more nodes.
+Uses **OpenTofu** for cloud infrastructure, **Ansible** for configuration, and **MicroK8s** as the Kubernetes distribution. HA is automatically enabled on MicroK8s clusters with three or more nodes (since 1.19).
 
-Learn more: https://microk8s.io/docs/high-availability
+## Prerequisites
 
-## get hcloud API Token
+- [OpenTofu](https://opentofu.org/docs/intro/install/) >= 1.8
+- [Ansible](https://docs.ansible.com/ansible/latest/installation_guide/)
+- Hetzner Cloud API token: WebUI → Project → Access → Add API Token
 
-hcloud WebUI -> Create new project -> Enter new project -> Access -> Add API Token
-
-## clone repo
+## Setup
 
 ```bash
-local$ git clone https://github.com/z3dm4n/k8s-dev-cluster-hcloud.git k8s-dev-cluster-hcloud
-local$ cd k8s-dev-cluster-hcloud
-local$ git checkout master
-local$ cp terraform/terraform.tfvars.example terraform/terraform.tfvars
-local$ # change hcloud_token in terraform/terraform.tfvars
+git clone https://github.com/z3dm4n/k8s-dev-cluster-hcloud.git
+cd k8s-dev-cluster-hcloud
+cp terraform/terraform.tfvars.example terraform/terraform.tfvars
+# set hcloud_token in terraform/terraform.tfvars
+make ssh-key
+make
 ```
 
-## create ssh key
+## Demo: Install Gitea
 
 ```bash
-local$ make ssh-key
+make demo
+echo "$(cd terraform; tofu output -raw loadbalancer-ip) www.gitea.local" | sudo tee -a /etc/hosts
 ```
 
-## run terraform + ansible
+Browse to [http://www.gitea.local](http://www.gitea.local) and log in with `gitea_admin` / `gitea_admin`.
+
+## Clean Up
 
 ```bash
-local$ make
+make clean
 ```
 
-## demo: install Gitea to your cluster
+## References
 
-```bash
-local$ make demo
-local$ cd terraform; echo "$(terraform output -raw loadbalancer-ip) www.gitea.local"
-local$ # add above command output to /etc/hosts
-```
-
-Now browse to http://www.gitea.local and log in with user `gitea_admin` and password `gitea_admin`.
-
-## summary
-
-You just installed Gitea to your new MicroK8s HA cluster in less than 10 minutes.
-
-## clean up, save money ;-)
-
-```bash
-local$ make clean
-```
+- [MicroK8s High Availability](https://microk8s.io/docs/high-availability)
+- [OpenTofu](https://opentofu.org)

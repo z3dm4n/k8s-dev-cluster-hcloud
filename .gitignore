@@ -5,8 +5,7 @@ files/*
 #  Local .terraform directories
 **/.terraform/*
 
-# Dependency Lock File (Terraform >= 0.14)
-# https://www.terraform.io/docs/language/dependency-lock.html
+# Dependency Lock File
 terraform/.terraform.lock.hcl
 
 # .tfstate files
@@ -27,3 +26,6 @@ ansible/inventory/hosts
 
 # OS
 .DS_Store
+
+# Claude Code
+CLAUDE.md
