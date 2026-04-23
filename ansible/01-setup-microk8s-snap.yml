@@ -15,11 +15,9 @@
         state: present
 
     - name: "install microk8s snap"
-      snap:
-        name: microk8s
-        channel: 1.30/stable
-        classic: "yes"
-        state: present
+      command: snap install microk8s --channel=1.30/stable --classic
+      args:
+        creates: /snap/bin/microk8s
       notify:
         - enable snapd
         - start snapd
