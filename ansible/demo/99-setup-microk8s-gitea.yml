@@ -3,8 +3,10 @@
 - hosts: n1
   gather_facts: "no"
 
+  vars_files:
+    - ../vars/vault.yml
+
   tasks:
-    # helm repo command is idempotent
     - name: "add gitea-charts helm repo"
       command: /snap/bin/helm repo add gitea-charts https://dl.gitea.com/charts/
       changed_when: false
@@ -16,18 +18,13 @@
         owner: root
         group: root
         mode: "0644"
-        checksum: b91bf7b00831c3539845b1085fbc1e471d4cd623
-
-    - name: "check for gitea helm release"
-      command: /snap/bin/helm status gitea
-      register: gitea_status
-      failed_when: false
-      changed_when: false
-      ignore_errors: "true"
 
     - name: "install gitea helm chart"
       command: >
         /snap/bin/helm upgrade --install gitea gitea-charts/gitea
         -f /root/values-gitea.yaml
+        --set gitea.admin.username={{ gitea_admin_username }}
+        --set gitea.admin.password={{ gitea_admin_password }}
+        --set postgresql.global.postgresql.auth.password={{ gitea_db_password }}
+        --set valkey.auth.password={{ gitea_valkey_password }}
         --namespace default
-      when: gitea_status.rc != 0

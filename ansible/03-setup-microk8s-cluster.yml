@@ -5,40 +5,52 @@
 
   tasks:
 
-      - name: "add node n2"
-        shell: /snap/bin/microk8s.add-node | grep 10.0.0.2 | cut -d'/' -f2
-        register: k8s_token_n2
+      - name: "generate join command for n2"
+        shell: /snap/bin/microk8s add-node | grep 10.0.0.3 | head -1
+        register: k8s_join_cmd_n2
         changed_when: false
 
-      - name: "add node n3"
-        shell: /snap/bin/microk8s.add-node | grep 10.0.0.2 | cut -d'/' -f2
-        register: k8s_token_n3
+      - name: "generate join command for n3"
+        shell: /snap/bin/microk8s add-node | grep 10.0.0.4 | head -1
+        register: k8s_join_cmd_n3
         changed_when: false
 
-      - name: "add k8s token to dummy host"
+      - name: "store join commands in dummy host"
         add_host:
             name: "K8S_TOKEN_HOLDER"
-            token_n2: "{{ k8s_token_n2.stdout }}"
-            token_n3: "{{ k8s_token_n3.stdout }}"
+            join_cmd_n2: "{{ k8s_join_cmd_n2.stdout }}"
+            join_cmd_n3: "{{ k8s_join_cmd_n3.stdout }}"
 
 - hosts: n2
   gather_facts: "no"
 
   tasks:
 
+      - name: "check if n2 already in cluster"
+        shell: /snap/bin/microk8s status | grep -c "n2"
+        register: n2_joined
+        failed_when: false
+        changed_when: false
+
       - name: "join node n2"
-        shell: >
-            /snap/bin/microk8s.join
-            10.0.0.2:25000/{{ hostvars['K8S_TOKEN_HOLDER']['token_n2'] }}
-        when: hostvars['K8S_TOKEN_HOLDER']['token_n2'] != ""
+        shell: "{{ hostvars['K8S_TOKEN_HOLDER']['join_cmd_n2'] }}"
+        when:
+            - hostvars['K8S_TOKEN_HOLDER']['join_cmd_n2'] != ""
+            - n2_joined.stdout == "0"
 
 - hosts: n3
   gather_facts: "no"
 
   tasks:
 
+      - name: "check if n3 already in cluster"
+        shell: /snap/bin/microk8s status | grep -c "n3"
+        register: n3_joined
+        failed_when: false
+        changed_when: false
+
       - name: "join node n3"
-        shell: >
-            /snap/bin/microk8s.join
-            10.0.0.2:25000/{{ hostvars['K8S_TOKEN_HOLDER']['token_n3'] }}
-        when: hostvars['K8S_TOKEN_HOLDER']['token_n3'] != ""
+        shell: "{{ hostvars['K8S_TOKEN_HOLDER']['join_cmd_n3'] }}"
+        when:
+            - hostvars['K8S_TOKEN_HOLDER']['join_cmd_n3'] != ""
+            - n3_joined.stdout == "0"

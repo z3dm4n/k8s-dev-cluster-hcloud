@@ -3,6 +3,9 @@
 - hosts: all
   gather_facts: "no"
 
+  vars:
+    microk8s_channel: "1.30/stable"
+
   tasks:
     - name: "update packages to the latest"
       apt:
@@ -15,7 +18,7 @@
         state: present
 
     - name: "install microk8s snap"
-      command: snap install microk8s --channel=1.30/stable --classic
+      command: "snap install microk8s --channel={{ microk8s_channel }} --classic"
       args:
         creates: /snap/bin/microk8s
       notify:

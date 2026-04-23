@@ -1,0 +1,7 @@
+# Ansible Vault secrets template
+# Copy to vault.yml and encrypt: ansible-vault encrypt ansible/vars/vault.yml
+---
+gitea_admin_username: gitea_admin
+gitea_admin_password: "change-me"
+gitea_db_password: "change-me"
+gitea_valkey_password: "change-me"

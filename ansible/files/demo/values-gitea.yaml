@@ -1,9 +1,10 @@
 # Values for gitea-charts/gitea
+# Credentials are passed via --set from Ansible Vault (ansible/vars/vault.yml)
 
 image:
   registry: docker.io
   repository: gitea/gitea
-  tag: latest
+  tag: "1.22.3"
   rootless: false
 
 ingress:
@@ -37,8 +38,6 @@ persistence:
 gitea:
   admin:
     existingSecret: ""
-    username: gitea_admin
-    password: gitea_admin
     email: "gitea@local.domain"
   config:
     APP_NAME: "Gitea"
@@ -53,7 +52,7 @@ gitea:
     openid:
       ENABLE_OPENID_SIGNIN: true
     security:
-      INSTALL_LOCK: false
+      INSTALL_LOCK: true
 
 postgresql-ha:
   enabled: false
@@ -64,7 +63,6 @@ postgresql:
     postgresql:
       auth:
         username: gitea
-        password: gitea
         database: gitea
   primary:
     persistence:
@@ -78,7 +76,6 @@ valkey:
   architecture: standalone
   auth:
     enabled: true
-    password: gitea
 
 mariadb:
   enabled: false
