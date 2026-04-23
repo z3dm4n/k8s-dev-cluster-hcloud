@@ -42,7 +42,7 @@ variable "server_type" {
 # Import SSH key
 resource "hcloud_ssh_key" "k8s-dev-cluster" {
   name       = "k8s-dev-cluster"
-  public_key = file(var.public_key_path)
+  public_key = trimspace(file(var.public_key_path))
 }
 
 #
