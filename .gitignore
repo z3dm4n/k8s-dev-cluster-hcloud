@@ -29,3 +29,6 @@ ansible/inventory/hosts
 
 # Claude Code
 CLAUDE.md
+
+# Git worktrees
+.worktrees
