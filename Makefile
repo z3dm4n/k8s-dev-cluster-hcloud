@@ -11,7 +11,7 @@ ansible:
 	ansible-playbook site.yml
 
 ssh-key:
-	ssh-keygen -f files/k8s-dev-cluster_rsa -C "k8s-dev-cluster project ssh key" -N "" -b 4096
+	ssh-keygen -t ed25519 -f files/k8s-dev-cluster -C "k8s-dev-cluster project ssh key" -N ""
 
 output:
 	cd terraform; \
