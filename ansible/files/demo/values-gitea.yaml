@@ -10,8 +10,7 @@ image:
 ingress:
   enabled: true
   className: public
-  annotations:
-    nginx.ingress.kubernetes.io/rewrite-target: /
+  annotations: {}
   hosts:
     - host: www.gitea.local
       paths:
