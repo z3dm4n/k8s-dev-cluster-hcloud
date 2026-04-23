@@ -23,12 +23,22 @@ make
 
 ## Demo: Install Gitea
 
+Before running the demo, set up an Ansible Vault file with Gitea credentials:
+
+```bash
+cp ansible/vars/vault.yml.example ansible/vars/vault.yml
+# Edit vault.yml and set secure passwords
+ansible-vault encrypt ansible/vars/vault.yml
+```
+
+Then install Gitea (you will be prompted for the vault password):
+
 ```bash
 make demo
 echo "$(cd terraform; tofu output -raw loadbalancer-ip) www.gitea.local" | sudo tee -a /etc/hosts
 ```
 
-Browse to [http://www.gitea.local](http://www.gitea.local) and log in with `gitea_admin` / `gitea_admin`.
+Browse to [http://www.gitea.local](http://www.gitea.local) and log in with the credentials you set in `vault.yml`.
 
 ## Clean Up
 
