@@ -6,12 +6,12 @@
   tasks:
 
       - name: "generate join command for n2"
-        shell: /snap/bin/microk8s add-node | grep 10.0.0.3 | head -1
+        shell: /snap/bin/microk8s add-node | grep 10.0.0.2 | head -1
         register: k8s_join_cmd_n2
         changed_when: false
 
       - name: "generate join command for n3"
-        shell: /snap/bin/microk8s add-node | grep 10.0.0.4 | head -1
+        shell: /snap/bin/microk8s add-node | grep 10.0.0.2 | head -1
         register: k8s_join_cmd_n3
         changed_when: false
 
