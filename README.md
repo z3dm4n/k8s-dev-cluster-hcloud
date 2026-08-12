@@ -1,3 +1,5 @@
+
+
 # k8s-dev-cluster-hcloud
 
 Minimal, highly available (HA) Kubernetes cluster on Hetzner Cloud — up and running in under 10 minutes.
@@ -16,7 +18,7 @@ Uses **OpenTofu** for cloud infrastructure, **Ansible** for configuration, and *
 git clone https://github.com/z3dm4n/k8s-dev-cluster-hcloud.git
 cd k8s-dev-cluster-hcloud
 cp terraform/terraform.tfvars.example terraform/terraform.tfvars
-# set hcloud_token in terraform/terraform.tfvars
+# set hcloud_token and loadbalancer_ip in terraform/terraform.tfvars
 make ssh-key
 make
 ```
